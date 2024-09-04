@@ -25,13 +25,21 @@ repositories {
     mavenCentral()
 }
 
+val queryDslVersion = "0.12.5"
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("io.jsonwebtoken:jjwt-api:$queryDslVersion")
+
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:$queryDslVersion")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:$queryDslVersion")
     runtimeOnly("com.h2database:h2")
+
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
