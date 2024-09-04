@@ -16,20 +16,21 @@ class JwtPlugin(
     private val key = Keys.hmacShaKeyFor(jwtProperties.secret.toByteArray(Charsets.UTF_8))
 
     fun validateToken(jwt: String): Result<Jws<Claims>> {
-        return kotlin.runCatching {
+        return runCatching {
             Jwts.parser().verifyWith(key).build().parseSignedClaims(jwt)
         }
     }
 
-    fun generateAccessToken(subject: String, userNickname: String): String {
-        return generateToken(subject, userNickname, Duration.ofHours(jwtProperties.accessTokenExpirationHour))
+    fun generateAccessToken(subject: String, role: String): String {
+        return generateToken(subject, role, Duration.ofHours(jwtProperties.accessTokenExpirationHour))
     }
 
-    fun generateToken(subject: String, userNickname: String, expirationHour: Duration): String {
+    fun generateToken(subject: String, role: String, expirationHour: Duration): String {
+        val claims: Claims = Jwts.claims().add(mapOf("role" to role)).build()
         val now = Instant.now()
         return Jwts.builder()
             .subject(subject)
-            .claims(mapOf("userNickname" to userNickname))
+            .claims(claims)
             .issuedAt(Date.from(now))
             .expiration(Date.from(now.plus(expirationHour)))
             .signWith(key)
