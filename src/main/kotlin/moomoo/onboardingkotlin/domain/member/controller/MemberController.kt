@@ -1,5 +1,6 @@
 package moomoo.onboardingkotlin.domain.member.controller
 
+import jakarta.validation.Valid
 import moomoo.onboardingkotlin.domain.member.dto.LoginRequest
 import moomoo.onboardingkotlin.domain.member.dto.LoginResponse
 import moomoo.onboardingkotlin.domain.member.dto.MemberResponse
@@ -19,7 +20,7 @@ class MemberController(
     private val memberService: MemberService
 ) {
     @PostMapping("/sign-up")
-    fun signUp(@RequestBody signUpRequest: SignUpRequest): ResponseEntity<MemberResponse> {
+    fun signUp(@Valid @RequestBody signUpRequest: SignUpRequest): ResponseEntity<MemberResponse> {
         return ResponseEntity
             .status(HttpStatus.CREATED)
             .body(memberService.signUp(signUpRequest))
