@@ -18,6 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 class SecurityConfig(
     private val jwtAuthenticationFilter: JwtAuthenticationFilter,
     private val customAuthenticationEntryPoint: CustomAuthenticationEntryPoint,
+    private val customAccessDeniedHandler: CustomAccessDeniedHandler
 ) {
 
     @Bean
@@ -29,7 +30,8 @@ class SecurityConfig(
             .headers { header -> header.frameOptions { it.disable() } }
             .authorizeHttpRequests {
                 it.requestMatchers(
-                    "/api/v1/member/**",
+                    "/api/v1/member/sign-up",
+                    "/api/v1/member/login",
                     "/swagger-ui/**",
                     "/v3/api-docs/**",
                     "/error",
@@ -38,7 +40,10 @@ class SecurityConfig(
                     .anyRequest().authenticated()
             }
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
-            .exceptionHandling { it.authenticationEntryPoint(customAuthenticationEntryPoint) }
+            .exceptionHandling {
+                it.authenticationEntryPoint(customAuthenticationEntryPoint)
+                it.accessDeniedHandler(customAccessDeniedHandler)
+            }
             .build()
     }
 
