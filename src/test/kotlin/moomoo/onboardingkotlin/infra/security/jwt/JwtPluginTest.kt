@@ -96,7 +96,7 @@ class JwtPluginTest {
     }
 
     @Test
-    fun `generateAccessToken은_지정된_만료_시간이_적용되어야야_한다`() {
+    fun generateAccessToken은_지정된_만료_시간이_적용되어야야_한다() {
         // Given
         val subject = "123"
         val role = "USER"
