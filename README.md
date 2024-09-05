@@ -14,9 +14,26 @@
 - [ ]  Swagger UI로 접속 가능하게 하기
 - [ ]  AWS EC2에 배포해보기
 
+<br/>
+
 # :books: 요구 사항에 따른 구현 사항 
 
 - Spring Security와 JWT를 이용한 회원가입/로그인 구현
+  - 회원가입 및 로그인이 구현되어 있습니다.
+  - Role은 USER, ADMIN 2개만 있습니다.
+  - /api/v1/member/is-logged-in에는 유효한 Token이 있는 경우, 즉 로그인된 경우에만 "성공적으로 로그인 되었습니다!"가 반환됩니다.
+  - /api/v1/admin/is-admin에는 ADMIN 역할을 가진 경우에만 "당신은 관리자입니다!"가 반환됩니다.
+
+- 토큰 발행/검증에 대한 테스트 코드 작성하기
+  - 테스트 시나리오 5개
+    - generateAccessToken()이 유효한 JWT 토큰을 생성한다
+    - validateToken()이 유효한 JWT 토큰에 대해서는 Success를 반환한다
+    - validateToken()이 유효하지 않은 JWT 토큰에 대해서는 Failure를 반환한다
+    - validateToken()은 만료된 JWT에 대해 Failure를 반환한다
+    - generateAccessToken()으로 생성된 토큰은 지정된 만료시간이 적용되어야 한다
+
+- AWS EC2에 배포해보기 (Swagger UI 주소)
+  - 배포 주소: http://43.203.254.207:8080/swagger-ui/index.html 
 
 <br/>
 
@@ -36,7 +53,7 @@
 |           |                                                             Tool & Version                                                             |
 |:---------:|:--------------------------------------------------------------------------------------------------------------------------------------:|
 | Language  |              <img src="https://img.shields.io/badge/Kotlin-ver 1.9-7F52FF?style=flat-squre&logo=Kotlin&logoColor=white"/>              |
-|    IDE    |            <img src="https://img.shields.io/badge/Intellij%20IDEA-000000?style=flat-squre&logo=intellijidea&logoColor=white"/>            |
+|    IDE    |            <img src="https://img.shields.io/badge/Intellij%20IDEA-000000?style=flat-squre&logo=intellijidea&logoColor=white"/>          |
 |    SDK    | <img src="https://img.shields.io/badge/Eclipse%20Temurin-ver 17.0.12-FF1464?style=flat-squre&logo=eclipseadoptium&logoColor=white"/> | 
 | Framework |       <img src="https://img.shields.io/badge/Spring%20Boot-ver 3.3.3-6DB33F?style=flat-squre&logo=springboot&logoColor=white"/>        |
 |    JWT    |         <img src="https://img.shields.io/badge/jjwt-ver 0.12.5-000000?style=flat-square&logo=jsonwebtokens&logoColor=white"/>          |
