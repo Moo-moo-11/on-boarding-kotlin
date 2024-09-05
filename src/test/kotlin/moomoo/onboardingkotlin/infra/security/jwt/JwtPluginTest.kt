@@ -100,7 +100,6 @@ class JwtPluginTest {
         // Given
         val subject = "123"
         val role = "USER"
-        val expectedDuration = Duration.ofHours(2)
 
         // When
         val token = jwtPlugin.generateAccessToken(subject, role)
@@ -115,6 +114,6 @@ class JwtPluginTest {
         val expiration = parsedClaimsJws.payload.expiration.toInstant()
 
         assertThat(Duration.between(issuedAt, expiration))
-            .isCloseTo(expectedDuration, Duration.ofMillis(1))
+            .isCloseTo(Duration.ofHours(jwtProperties.accessTokenExpirationHour), Duration.ofMillis(1))
     }
 }
