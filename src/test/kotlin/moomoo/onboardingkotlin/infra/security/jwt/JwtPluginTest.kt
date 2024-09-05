@@ -24,6 +24,8 @@ class JwtPluginTest {
 
     private val jwtPlugin = JwtPlugin(jwtProperties)
 
+    private val key = Keys.hmacShaKeyFor(jwtProperties.secret.toByteArray(Charsets.UTF_8))
+
     @Test
     fun generateAccessToken은_유효한_JWT_토큰을_발급한다() {
         // Given
@@ -35,7 +37,7 @@ class JwtPluginTest {
 
         // Then
         val parsedClaimsJws: Jws<Claims> = Jwts.parser()
-            .verifyWith(Keys.hmacShaKeyFor(jwtProperties.secret.toByteArray(Charsets.UTF_8)))
+            .verifyWith(key)
             .build()
             .parseSignedClaims(token)
 
@@ -84,7 +86,7 @@ class JwtPluginTest {
             .claim("role", role)
             .issuedAt(Date.from(Instant.now().minus(Duration.ofHours(1))))
             .expiration(Date.from(Instant.now().minus(Duration.ofMinutes(30))))
-            .signWith(Keys.hmacShaKeyFor(jwtProperties.secret.toByteArray(Charsets.UTF_8)))
+            .signWith(key)
             .compact()
 
         // When
@@ -100,14 +102,13 @@ class JwtPluginTest {
         // Given
         val subject = "123"
         val role = "USER"
-        val expectedDuration = Duration.ofHours(2)
 
         // When
         val token = jwtPlugin.generateAccessToken(subject, role)
 
         // Then
         val parsedClaimsJws: Jws<Claims> = Jwts.parser()
-            .verifyWith(Keys.hmacShaKeyFor(jwtProperties.secret.toByteArray(Charsets.UTF_8)))
+            .verifyWith(key)
             .build()
             .parseSignedClaims(token)
 
@@ -115,6 +116,6 @@ class JwtPluginTest {
         val expiration = parsedClaimsJws.payload.expiration.toInstant()
 
         assertThat(Duration.between(issuedAt, expiration))
-            .isCloseTo(expectedDuration, Duration.ofMillis(1))
+            .isCloseTo(Duration.ofHours(jwtProperties.accessTokenExpirationHour), Duration.ofMillis(1))
     }
 }
