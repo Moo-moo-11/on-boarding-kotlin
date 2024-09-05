@@ -25,7 +25,7 @@ class JwtPlugin(
         return generateToken(subject, role, Duration.ofHours(jwtProperties.accessTokenExpirationHour))
     }
 
-    fun generateToken(subject: String, role: String, expirationHour: Duration): String {
+    private fun generateToken(subject: String, role: String, expirationHour: Duration): String {
         val claims: Claims = Jwts.claims().add(mapOf("role" to role)).build()
         val now = Instant.now()
         return Jwts.builder()
